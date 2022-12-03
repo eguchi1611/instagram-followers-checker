@@ -21,6 +21,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { NextPage } from "next";
+import Head from "next/head";
 import { useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -56,6 +57,9 @@ const IndexPage: NextPage = () => {
 
   return (
     <Container maxWidth="3xl">
+      <Head>
+        <title>Instagram Followers Checker</title>
+      </Head>
       <Text fontSize="x-large" mb={4}>
         Instagram Followers Checker
       </Text>
