@@ -70,7 +70,7 @@ const IndexPage: NextPage = () => {
             inputProps={register("followingsHtml")}
           />
           <Button variant="solid" type="submit">
-            Submit
+            解析
           </Button>
         </VStack>
       </form>
