@@ -1,5 +1,5 @@
-import { FormControl, FormLabel, Textarea, VStack } from "@chakra-ui/react";
-import { FC, ReactPropTypes, TextareaHTMLAttributes } from "react";
+import { FormControl, FormLabel, Textarea } from "@chakra-ui/react";
+import { FC, TextareaHTMLAttributes } from "react";
 
 type Props = {
   text: string;
@@ -10,7 +10,7 @@ const InputForm: FC<Props> = ({ text, inputProps }) => {
   return (
     <FormControl>
       <FormLabel>{text}</FormLabel>
-      <Textarea {...inputProps} />
+      <Textarea rows={5} {...inputProps} />
     </FormControl>
   );
 };

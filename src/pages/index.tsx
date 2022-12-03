@@ -1,4 +1,6 @@
 import InputForm from "@/components/input-form";
+import UserList from "@/components/user-list";
+import { extract } from "@/utils/calc";
 import {
   Button,
   Container,
@@ -9,24 +11,43 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Text,
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import { NextPage } from "next";
+import { useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type Inputs = {
   followersHtml: string;
-  followingHtml: string;
+  followingsHtml: string;
 };
 
 const IndexPage: NextPage = () => {
   // 入力フォーム
   const { register, handleSubmit } = useForm<Inputs>();
 
+  const [users, setUsers] = useState<AdjustedUser[]>([]);
+
+  const notFollowings = useMemo(
+    () => users.filter((user) => !user.follower && user.following),
+    [users]
+  );
+
+  const notFollowers = useMemo(
+    () => users.filter((user) => user.follower && !user.following),
+    [users]
+  );
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+    const res = extract(data.followersHtml, data.followingsHtml);
+    setUsers(res);
     onOpen();
   };
 
@@ -34,7 +55,10 @@ const IndexPage: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Container>
+    <Container maxWidth="3xl">
+      <Text fontSize="x-large" mb={4}>
+        Instagram Followers Checker
+      </Text>
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack>
           <InputForm
@@ -43,7 +67,7 @@ const IndexPage: NextPage = () => {
           />
           <InputForm
             text="フォロー中のHTMLソース"
-            inputProps={register("followingHtml")}
+            inputProps={register("followingsHtml")}
           />
           <Button variant="solid" type="submit">
             Submit
@@ -56,7 +80,20 @@ const IndexPage: NextPage = () => {
           <ModalHeader>解析結果</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>text</Text>
+            <Tabs isFitted>
+              <TabList>
+                <Tab>片思いしてる ({notFollowings.length})</Tab>
+                <Tab>片思いされてる ({notFollowers.length})</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <UserList users={notFollowings} />
+                </TabPanel>
+                <TabPanel>
+                  <UserList users={notFollowers} />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </ModalBody>
           <ModalFooter></ModalFooter>
         </ModalContent>
