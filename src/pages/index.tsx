@@ -1,7 +1,12 @@
+import { Container, Text } from "@chakra-ui/react";
 import { NextPage } from "next";
 
 const IndexPage: NextPage = () => {
-  return <div>index page</div>;
+  return (
+    <Container>
+      <Text>Test TEXT</Text>
+    </Container>
+  );
 };
 
 export default IndexPage;
